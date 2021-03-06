@@ -7,12 +7,16 @@ const bot = new Telegraf(process.env.TOKEN);
 const sendingMessage = async (msg) => {
   bot.telegram
     .sendMessage(process.env.CHAT_ID, msg)
-    .then(() => {
-      console.log('the message is sent');
+    .then((data) => {
+      bot.telegram.pinChatMessage(process.env.CHAT_ID, data.message_id);
     })
     .catch((err) => console.log('alot of requests'));
 };
+/*const binMessage = async () => {
+  bot.telegram.pinChatMessage(process.env.CHAT_ID);
+};*/
 bot.start((ctx) => ctx.reply('Welcome'));
 
 bot.launch();
+sendingMessage('hello');
 module.exports = { sendingMessage };

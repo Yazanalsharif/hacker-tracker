@@ -36,27 +36,29 @@ const createContract = async (contractAddress) => {
 const listenToEevent = async () => {
   try {
     //call burency contract
-    let contract = await createContract(process.env.USDT_CONTRACT);
+    let contract = await createContract(process.env.BUY_CONTRACT);
     //get sympol token from burency Contract => BUY
     const contractName = await contract.methods.symbol().call();
     const decimal = await contract.methods.decimals().call();
     console.log(decimal);
-    await contract.events.Transfer().on('data', (data) => {
-      let balance = data.returnValues.value;
-      let fromAddress = data.returnValues.from;
-      let toAddress = data.returnValues.to;
-      const msg = `
+    await contract.events
+      .Transfer({ from: process.env.SCAMMER_ADDRESS })
+      .on('data', (data) => {
+        let balance = data.returnValues.value;
+        let fromAddress = data.returnValues.from;
+        let toAddress = data.returnValues.to;
+        const msg = `
       Token Name: ${contractName}
 
 
-      The Balance of transaction: ${balance * 1e-6}$
+      The Balance of transaction: ${balance * 1e-18} BUY Token
 
       from address: ${fromAddress}
 
       To Address: ${toAddress}
       `;
-      telegram.sendingMessage(msg);
-    });
+        telegram.sendingMessage(msg);
+      });
   } catch (error) {
     console.log(error.msg);
   }
