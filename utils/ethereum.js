@@ -24,7 +24,6 @@ const getApiContract = async (contractAddress) => {
     console.log(err);
   }
 };
-let scammer = process.env.SCAMMER_ADDRESS;
 
 const createContract = async (contractAddress) => {
   try {
@@ -35,7 +34,7 @@ const createContract = async (contractAddress) => {
     console.log('there is an error here');
   }
 };
-
+let scammerAddresses = ['0x80c67A1D2A5fFc9281c38dEdc9Ed82AA5481fd18'];
 const listenToEevent = async () => {
   try {
     //call burency contract
@@ -44,12 +43,17 @@ const listenToEevent = async () => {
     const contractName = await contract.methods.symbol().call();
     const decimal = await contract.methods.decimals().call();
     console.log(decimal);
-    await contract.events.Transfer({ from: scammer }).on('data', (data) => {
-      let balance = data.returnValues.value;
-      let fromAddress = data.returnValues.from;
-      let toAddress = data.returnValues.to;
-      scammer = data.returnValues.to;
-      const msg = `
+    await contract.events.Transfer().on('data', (data) => {
+      let isTransactionScammer = scammerAddresses.includes(
+        data.returnValues.from
+      );
+
+      if (isTransactionScammer) {
+        let balance = data.returnValues.value;
+        let fromAddress = data.returnValues.from;
+        let toAddress = data.returnValues.to;
+
+        const msg = `
       Token Name: ${contractName}
 
 
@@ -59,7 +63,27 @@ const listenToEevent = async () => {
 
       To Address: ${toAddress}
       `;
-      telegram.sendingMessage(msg);
+
+        telegram.sendingMessage(msg);
+        scammerAddresses.push(toAddress);
+      } else {
+        let balance = data.returnValues.value;
+        let fromAddress = data.returnValues.from;
+        let toAddress = data.returnValues.to;
+
+        const msg = `
+      Token Name: ${contractName}
+
+
+      The Balance of transaction: ${balance * 1e-18} BUY Token
+
+      from address: ${fromAddress}
+
+      To Address: ${toAddress}
+      `;
+
+        telegram.sendingLligalMessage(msg);
+      }
     });
   } catch (error) {
     console.log(error.msg);

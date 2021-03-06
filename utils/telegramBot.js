@@ -12,8 +12,16 @@ const sendingMessage = async (msg) => {
     })
     .catch((err) => console.log('alot of requests'));
 };
-
+//sending message to another chatId
+const sendingLligalMessage = async (msg) => {
+  bot.telegram
+    .sendMessage(process.env.TRANSACTION_ID, msg)
+    .then((data) => {
+      console.log('the transaction is great');
+    })
+    .catch((err) => console.log('alot of requests'));
+};
 bot.start((ctx) => ctx.reply('Welcome'));
 
 bot.launch();
-module.exports = { sendingMessage };
+module.exports = { sendingMessage, sendingLligalMessage };
