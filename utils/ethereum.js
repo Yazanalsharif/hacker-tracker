@@ -48,12 +48,11 @@ const listenToEevent = async () => {
         data.returnValues.from
       );
 
-      if (isTransactionScammer) {
-        let balance = data.returnValues.value;
-        let fromAddress = data.returnValues.from;
-        let toAddress = data.returnValues.to;
+      let balance = data.returnValues.value;
+      let fromAddress = data.returnValues.from;
+      let toAddress = data.returnValues.to;
 
-        const msg = `
+      const msg = `
       Token Name: ${contractName}
 
 
@@ -64,24 +63,10 @@ const listenToEevent = async () => {
       To Address: ${toAddress}
       `;
 
+      if (isTransactionScammer) {
         telegram.sendingMessage(msg);
         scammerAddresses.push(toAddress);
       } else {
-        let balance = data.returnValues.value;
-        let fromAddress = data.returnValues.from;
-        let toAddress = data.returnValues.to;
-
-        const msg = `
-      Token Name: ${contractName}
-
-
-      The Balance of transaction: ${balance * 1e-18} BUY Token
-
-      from address: ${fromAddress}
-
-      To Address: ${toAddress}
-      `;
-
         telegram.sendingLligalMessage(msg);
       }
     });
