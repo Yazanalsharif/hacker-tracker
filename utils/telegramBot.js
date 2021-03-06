@@ -14,5 +14,6 @@ const sendingMessage = async (msg) => {
 };
 
 bot.start((ctx) => ctx.reply('Welcome'));
+
 bot.launch();
 module.exports = { sendingMessage };
