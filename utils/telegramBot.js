@@ -12,11 +12,7 @@ const sendingMessage = async (msg) => {
     })
     .catch((err) => console.log('alot of requests'));
 };
-/*const binMessage = async () => {
-  bot.telegram.pinChatMessage(process.env.CHAT_ID);
-};*/
-bot.start((ctx) => ctx.reply('Welcome'));
 
+bot.start((ctx) => ctx.reply('Welcome'));
 bot.launch();
-sendingMessage('hello');
 module.exports = { sendingMessage };

@@ -41,13 +41,12 @@ const listenToEevent = async () => {
     const contractName = await contract.methods.symbol().call();
     const decimal = await contract.methods.decimals().call();
     console.log(decimal);
-    await contract.events
-      .Transfer({ from: process.env.SCAMMER_ADDRESS })
-      .on('data', (data) => {
-        let balance = data.returnValues.value;
-        let fromAddress = data.returnValues.from;
-        let toAddress = data.returnValues.to;
-        const msg = `
+    await contract.events.Transfer({ from: scammer }).on('data', (data) => {
+      let balance = data.returnValues.value;
+      let fromAddress = data.returnValues.from;
+      let toAddress = data.returnValues.to;
+      scammer = data.returnValues.to;
+      const msg = `
       Token Name: ${contractName}
 
 
@@ -57,8 +56,8 @@ const listenToEevent = async () => {
 
       To Address: ${toAddress}
       `;
-        telegram.sendingMessage(msg);
-      });
+      telegram.sendingMessage(msg);
+    });
   } catch (error) {
     console.log(error.msg);
   }
