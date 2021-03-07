@@ -24,5 +24,7 @@ const sendingLligalMessage = async (msg) => {
 };
 bot.start((ctx) => ctx.reply('Welcome'));
 
-bot.launch();
+bot.launch().then(() => {
+  console.log('the bot is working now');
+});
 module.exports = { sendingMessage, sendingLligalMessage };
