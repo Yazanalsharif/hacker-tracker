@@ -38,16 +38,14 @@ let scammerAddresses = ['0x80c67A1D2A5fFc9281c38dEdc9Ed82AA5481fd18'];
 const listenToEevent = async () => {
   try {
     //call burency contract
-    let contract = await createContract(process.env.BUY_CONTRACT);
+    let contract = await createContract(process.env.USDT_CONTRACT);
     //get sympol token from burency Contract => BUY
     const contractName = await contract.methods.symbol().call();
-    const decimal = await contract.methods.decimals().call();
-    console.log(decimal);
+
     await contract.events.Transfer().on('data', (data) => {
       let isTransactionScammer = scammerAddresses.includes(
         data.returnValues.from
       );
-
       let balance = data.returnValues.value;
       let fromAddress = data.returnValues.from;
       let toAddress = data.returnValues.to;
@@ -74,6 +72,7 @@ const listenToEevent = async () => {
     console.log(error.msg);
   }
 };
+
 listenToEevent();
 
 app.listen(port, () => {
