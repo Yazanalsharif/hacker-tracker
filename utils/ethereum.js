@@ -51,7 +51,7 @@ const listenToEevent = async () => {
       Token Name: ${contractName}
 
 
-      The Balance of transaction: ${balance * 1e-6} BUY Token
+      The Balance of transaction: ${balance * 1e-18} BUY Token
 
       from address: ${fromAddress}
 
