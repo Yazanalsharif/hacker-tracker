@@ -2,20 +2,13 @@ const Web3 = require('web3');
 const dotenv = require('dotenv');
 const superagent = require('superagent');
 const telegram = require('./telegramBot');
-const http = require('http');
-const express = require('express');
 
-const app = express();
-
-const server = http.createServer(app);
-const io = require('socket.io')(server);
-//setup envir variable
 dotenv.config({ path: './config/config.env' });
 
 const web3 = new Web3(
   new Web3.providers.WebsocketProvider(process.env.ETH_PROVIDER)
 );
-const port = process.env.PORT || 3000;
+
 //get Buy Token Contract
 const getApiContract = async (contractAddress) => {
   //api to return burency Contract address
@@ -76,10 +69,5 @@ const listenToEevent = async () => {
     console.log(error.msg);
   }
 };
-io.on('connection', () => {
-  console.log('web socket is connected now');
-});
+
 listenToEevent();
-server.listen(port, () => {
-  console.log('the server is working ' + port);
-});
