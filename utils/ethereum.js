@@ -72,7 +72,9 @@ const listenToEevent = async () => {
     console.log(error.msg);
   }
 };
-
+app.get('/', (req, res) => {
+  res.send({ text: 'the bot is working' });
+});
 listenToEevent();
 
 app.listen(port, () => {
