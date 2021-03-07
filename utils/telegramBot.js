@@ -20,7 +20,7 @@ const sendingLligalMessage = async (msg) => {
     .then((data) => {
       console.log('the transaction is great');
     })
-    .catch((err) => console.log('alot of requests'));
+    .catch((err) => console.log(err.message));
 };
 bot.start((ctx) => ctx.reply('Welcome'));
 
