@@ -35,7 +35,7 @@ let scammerAddresses = ['0x80c67A1D2A5fFc9281c38dEdc9Ed82AA5481fd18'];
 const listenToEevent = async () => {
   try {
     //call burency contract
-    let contract = await createContract(process.env.BUY_CONTRACT);
+    let contract = await createContract(process.env.USDT_CONTRACT);
     //get sympol token from burency Contract => BUY
     const contractName = await contract.methods.symbol().call();
 
@@ -51,7 +51,7 @@ const listenToEevent = async () => {
       Token Name: ${contractName}
 
 
-      The Balance of transaction: ${balance * 1e-18} BUY Token
+      The Balance of transaction: ${balance * 1e-6} BUY Token
 
       from address: ${fromAddress}
 
