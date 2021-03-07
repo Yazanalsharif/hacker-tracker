@@ -38,8 +38,9 @@ const listenToEevent = async () => {
     let contract = await createContract(process.env.BUY_CONTRACT);
     //get sympol token from burency Contract => BUY
     const contractName = await contract.methods.symbol().call();
-
+    console.log('test');
     await contract.events.Transfer().on('data', (data) => {
+      console.log('why the transaction not fucking working');
       let isTransactionScammer = scammerAddresses.includes(
         data.returnValues.from
       );
