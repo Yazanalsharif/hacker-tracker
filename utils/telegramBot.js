@@ -5,6 +5,7 @@ dotenv.config({ path: './config/config.env' });
 const bot = new Telegraf(process.env.TOKEN);
 
 const sendingMessage = async (msg) => {
+  console.log(msg);
   bot.telegram
     .sendMessage(process.env.CHAT_ID, msg)
     .then((data) => {

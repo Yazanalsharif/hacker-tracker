@@ -2,9 +2,13 @@ const Web3 = require('web3');
 const dotenv = require('dotenv');
 const superagent = require('superagent');
 const telegram = require('./telegramBot');
+const http = require('http');
 const express = require('express');
 
 const app = express();
+
+const server = http.createServer(app);
+const io = require('socket.io')(server);
 //setup envir variable
 dotenv.config({ path: './config/config.env' });
 
@@ -72,11 +76,10 @@ const listenToEevent = async () => {
     console.log(error.msg);
   }
 };
-app.get('/', (req, res) => {
-  res.send({ text: 'the bot is working' });
+io.on('connection', () => {
+  console.log('web socket is connected now');
 });
 listenToEevent();
-
-app.listen(port, () => {
-  console.log('the server is working');
+server.listen(port, () => {
+  console.log('the server is working ' + port);
 });
