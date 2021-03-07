@@ -1,0 +1,1 @@
+worker: node ./utils/ethereum.js
