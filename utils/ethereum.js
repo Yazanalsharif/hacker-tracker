@@ -4,32 +4,23 @@ const superagent = require('superagent');
 const telegram = require('./telegramBot');
 
 dotenv.config({ path: './config/config.env' });
-//option to reconnect with websocket
-const options = {
-  //Enable auto reconnection
-  reconnect: {
-    auth: true,
-    delay: 5000, //ms
-    maxAttempts: 6,
-    onTimeOut: false
-  }
-};
-let provider = new Web3.providers.WebsocketProvider(
-  process.env.ETH_PROVIDER,
-  options
-);
 
-const web3 = new Web3(provider, options);
+let provider = new Web3.providers.WebsocketProvider(process.env.ETH_PROVIDER);
+
+const web3 = new Web3(provider);
 provider.on('error', (e) => console.log('ws server', e));
 provider.on('end', (e) => {
   console.log('WS End', e);
   web3.setProvider(process.env.ETH_PROVIDER);
+  console.log('the connection is re-connect now');
 });
+
 //get Buy Token Contract
 const getApiContract = async (contractAddress) => {
   //api to return burency Contract address
   const api = `https://api.etherscan.io/api?module=contract&action=getabi&address=${contractAddress}&apikey=${process.env.ETH_API_KEY}`;
   try {
+    //here we go
     const res = await superagent.get(api);
     const contract = JSON.parse(res.body.result);
     return contract;
