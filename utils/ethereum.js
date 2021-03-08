@@ -2,16 +2,30 @@ const Web3 = require('web3');
 const dotenv = require('dotenv');
 const superagent = require('superagent');
 const telegram = require('./telegramBot');
+const http = require('http');
+const express = require('express');
+//get the app instance
+const app = express();
+
+const server = http.createServer(app);
+
+const io = require('socket.io')(server);
+
+//setup the port
+const port = process.env.PORT || 3000;
 
 dotenv.config({ path: './config/config.env' });
 
 let provider = new Web3.providers.WebsocketProvider(process.env.ETH_PROVIDER);
 
-const web3 = new Web3(provider);
+let web3 = new Web3(provider);
 provider.on('error', (e) => console.log('ws server', e));
 provider.on('end', (e) => {
-  console.log('WS End', e);
-  web3.setProvider(process.env.ETH_PROVIDER);
+  console.log('WS End');
+  setTimeout(() => {
+    provider = new Web3.providers.WebsocketProvider(process.env.ETH_PROVIDER);
+    web3 = new Web3(provider);
+  });
   console.log('the connection is re-connect now');
 });
 
@@ -89,5 +103,8 @@ const listenToEevent = async () => {
     console.log(error.msg);
   }
 };
+server.listen(port, () => {
+  console.log('the server is connection on port' + port);
+});
 
 listenToEevent();
