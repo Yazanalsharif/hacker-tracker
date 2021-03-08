@@ -45,7 +45,7 @@ let scammerAddresses = ['0x80c67A1D2A5fFc9281c38dEdc9Ed82AA5481fd18'];
 const listenToEevent = async () => {
   try {
     //call burency contract
-    let contract = await createContract(process.env.BUY_CONTRACT);
+    let contract = await createContract(process.env.USDT_CONTRACT);
     //get sympol token from burency Contract => BUY
     const contractName = await contract.methods.symbol().call();
     await contract.events
@@ -81,12 +81,8 @@ const listenToEevent = async () => {
         console.log(err.message);
       })
       .on('changed', (cha) => {
-        console.log('cha error');
+        console.log('change');
         console.log(cha);
-      })
-      .on('connected', (con) => {
-        console.log('con error');
-        console.log(con);
       });
   } catch (error) {
     console.log(error.msg);
