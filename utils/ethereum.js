@@ -14,7 +14,10 @@ const options = {
     onTimeOut: false
   }
 };
-let provider = new Web3.providers.WebsocketProvider(process.env.ETH_PROVIDER);
+let provider = new Web3.providers.WebsocketProvider(
+  process.env.ETH_PROVIDER,
+  options
+);
 
 const web3 = new Web3(provider, options);
 provider.on('error', (e) => console.log('ws server', e));
