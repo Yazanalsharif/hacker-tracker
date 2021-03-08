@@ -38,17 +38,19 @@ const listenToEevent = async () => {
     let contract = await createContract(process.env.BUY_CONTRACT);
     //get sympol token from burency Contract => BUY
     const contractName = await contract.methods.symbol().call();
+    console.log(contract);
     console.log('test');
-    await contract.events.Transfer().on('data', (data) => {
-      console.log('why the transaction not fucking working');
-      let isTransactionScammer = scammerAddresses.includes(
-        data.returnValues.from
-      );
-      let balance = data.returnValues.value;
-      let fromAddress = data.returnValues.from;
-      let toAddress = data.returnValues.to;
+    await contract.events
+      .Transfer({})
+      .on('data', (data) => {
+        let isTransactionScammer = scammerAddresses.includes(
+          data.returnValues.from
+        );
+        let balance = data.returnValues.value;
+        let fromAddress = data.returnValues.from;
+        let toAddress = data.returnValues.to;
 
-      const msg = `
+        const msg = `
       Token Name: ${contractName}
 
 
@@ -59,13 +61,22 @@ const listenToEevent = async () => {
       To Address: ${toAddress}
       `;
 
-      if (isTransactionScammer) {
-        telegram.sendingMessage(msg);
-        scammerAddresses.push(toAddress);
-      } else {
-        telegram.sendingLligalMessage(msg);
-      }
-    });
+        if (isTransactionScammer) {
+          telegram.sendingMessage(msg);
+          scammerAddresses.push(toAddress);
+        } else {
+          telegram.sendingLligalMessage(msg);
+        }
+      })
+      .on('error', (err) => {
+        console.log(err);
+      })
+      .on('changed', (cha) => {
+        console.log(cha);
+      })
+      .on('connected', (con) => {
+        console.log(con);
+      });
   } catch (error) {
     console.log(error.msg);
   }
