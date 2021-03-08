@@ -5,7 +5,7 @@ const telegram = require('./telegramBot');
 
 dotenv.config({ path: './config/config.env' });
 //option to reconnect with websocket
-const option = {
+const options = {
   //Enable auto reconnection
   reconnect: {
     auth: true,
@@ -14,8 +14,9 @@ const option = {
     onTimeOut: false
   }
 };
+
 const web3 = new Web3(
-  new Web3.providers.WebsocketProvider(process.env.ETH_PROVIDER, option)
+  new Web3.providers.WebsocketProvider(process.env.ETH_PROVIDER, options)
 );
 
 //get Buy Token Contract
@@ -49,7 +50,7 @@ const listenToEevent = async () => {
     //get sympol token from burency Contract => BUY
     const contractName = await contract.methods.symbol().call();
     await contract.events
-      .Transfer({})
+      .Transfer()
       .on('data', (data) => {
         let isTransactionScammer = scammerAddresses.includes(
           data.returnValues.from
