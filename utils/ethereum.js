@@ -103,8 +103,8 @@ const listenToEevent = async () => {
     console.log(error.msg);
   }
 };
-server.listen(port, () => {
-  console.log('the server is connection on port' + port);
-});
 
 listenToEevent();
+server.listen(port, () => {
+  console.log('the server is connection on port ' + port);
+});
