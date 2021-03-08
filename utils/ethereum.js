@@ -14,11 +14,14 @@ const options = {
     onTimeOut: false
   }
 };
+let provider = new Web3.providers.WebsocketProvider(process.env.ETH_PROVIDER);
 
-const web3 = new Web3(
-  new Web3.providers.WebsocketProvider(process.env.ETH_PROVIDER, options)
-);
-
+const web3 = new Web3(provider, options);
+provider.on('error', (e) => console.log('ws server', e));
+provider.on('end', (e) => {
+  console.log('WS End', e);
+  web3.setProvider(process.env.ETH_PROVIDER);
+});
 //get Buy Token Contract
 const getApiContract = async (contractAddress) => {
   //api to return burency Contract address
