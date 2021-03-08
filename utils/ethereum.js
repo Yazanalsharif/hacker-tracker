@@ -4,6 +4,7 @@ const superagent = require('superagent');
 const telegram = require('./telegramBot');
 
 dotenv.config({ path: './config/config.env' });
+//option to reconnect with websocket
 const option = {
   //Enable auto reconnection
   reconnect: {
@@ -39,6 +40,7 @@ const createContract = async (contractAddress) => {
     console.log('there is an error here');
   }
 };
+//we will edit this address to make it in database
 let scammerAddresses = ['0x80c67A1D2A5fFc9281c38dEdc9Ed82AA5481fd18'];
 const listenToEevent = async () => {
   try {
