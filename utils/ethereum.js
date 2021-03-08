@@ -4,9 +4,17 @@ const superagent = require('superagent');
 const telegram = require('./telegramBot');
 
 dotenv.config({ path: './config/config.env' });
-
+const option = {
+  //Enable auto reconnection
+  reconnect: {
+    auth: true,
+    delay: 5000, //ms
+    maxAttempts: 6,
+    onTimeOut: false
+  }
+};
 const web3 = new Web3(
-  new Web3.providers.WebsocketProvider(process.env.ETH_PROVIDER)
+  new Web3.providers.WebsocketProvider(process.env.ETH_PROVIDER, option)
 );
 
 //get Buy Token Contract
@@ -38,8 +46,6 @@ const listenToEevent = async () => {
     let contract = await createContract(process.env.BUY_CONTRACT);
     //get sympol token from burency Contract => BUY
     const contractName = await contract.methods.symbol().call();
-    console.log(contract);
-    console.log('test');
     await contract.events
       .Transfer({})
       .on('data', (data) => {
@@ -69,12 +75,15 @@ const listenToEevent = async () => {
         }
       })
       .on('error', (err) => {
-        console.log(err);
+        console.log('block error');
+        console.log(err.message);
       })
       .on('changed', (cha) => {
+        console.log('cha error');
         console.log(cha);
       })
       .on('connected', (con) => {
+        console.log('con error');
         console.log(con);
       });
   } catch (error) {
