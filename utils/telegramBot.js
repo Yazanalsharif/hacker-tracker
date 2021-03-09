@@ -18,7 +18,7 @@ const sendingLligalMessage = async (msg) => {
   bot.telegram
     .sendMessage(process.env.TRANSACTION_ID, msg)
     .then((data) => {
-      console.log('the transaction is great');
+      console.log('sent to telegram group');
     })
     .catch((err) => console.log(err.message));
 };
