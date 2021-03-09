@@ -14,12 +14,7 @@ const createProvider = () => {
   provider.on('error', (e) => console.log('ws server', e));
   //try to reconnect to provider when the provider ends
   provider.on('end', (e) => {
-    console.log('WS End');
-    setTimeout(() => {
-      provider = new Web3.providers.WebsocketProvider(process.env.ETH_PROVIDER);
-      web3.setProvider(provider);
-    }, 5000);
-    console.log('the connection is re-connect now');
+    telegram.sendingLligalMessage(msg);
   });
 
   return web3;
