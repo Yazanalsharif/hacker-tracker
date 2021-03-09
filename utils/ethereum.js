@@ -13,8 +13,12 @@ const createProvider = () => {
   //listen to errors from provider
   provider.on('error', (e) => console.log('ws server', e));
   //try to reconnect to provider when the provider ends
-  provider.on('end', (e) => {
-    telegram.sendingLligalMessage(msg);
+  provider.on('end', async (e) => {
+    telegram.sendingLligalMessage('the connection is droped');
+    setTimeout(() => {
+      await listenToEevent();
+    }, 7000)
+    telegram.sendingLligalMessage('the connection is uped');
   });
 
   return web3;
