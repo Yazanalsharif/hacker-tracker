@@ -15,9 +15,9 @@ const createProvider = () => {
   //try to reconnect to provider when the provider ends
   provider.on('end', async (e) => {
     telegram.sendingLligalMessage('the connection is droped');
-    setTimeout(() => {
+    setTimeout(async () => {
       await listenToEevent();
-    }, 7000)
+    }, 7000);
     telegram.sendingLligalMessage('the connection is uped');
   });
 
