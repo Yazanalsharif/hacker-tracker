@@ -1,1 +1,1 @@
-worker: node ./utils/ethereum.js
+worker: node ./app.js
