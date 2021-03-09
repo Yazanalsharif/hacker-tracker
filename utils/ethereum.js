@@ -3,25 +3,27 @@ const dotenv = require('dotenv');
 const superagent = require('superagent');
 const telegram = require('./telegramBot');
 
-//setup the port
-const port = process.env.PORT || 3000;
-
 dotenv.config({ path: './config/config.env' });
 
-let provider = new Web3.providers.WebsocketProvider(process.env.ETH_PROVIDER);
+const createProvider = () => {
+  let provider = new Web3.providers.WebsocketProvider(process.env.ETH_PROVIDER);
 
-let web3 = new Web3(provider);
+  let web3 = new Web3(provider);
 
-provider.on('error', (e) => console.log('ws server', e));
-provider.on('end', (e) => {
-  console.log('WS End');
-  setTimeout(() => {
-    provider = new Web3.providers.WebsocketProvider(process.env.ETH_PROVIDER);
-    web3 = new Web3(provider);
-  }, 5000);
-  console.log('the connection is re-connect now');
-});
+  //listen to errors from provider
+  provider.on('error', (e) => console.log('ws server', e));
+  //try to reconnect to provider when the provider ends
+  provider.on('end', (e) => {
+    console.log('WS End');
+    setTimeout(() => {
+      provider = new Web3.providers.WebsocketProvider(process.env.ETH_PROVIDER);
+      web3.setProvider(provider);
+    }, 5000);
+    console.log('the connection is re-connect now');
+  });
 
+  return web3;
+};
 //get Buy Token Contract
 const getApiContract = async (contractAddress) => {
   //api to return burency Contract address
@@ -38,6 +40,7 @@ const getApiContract = async (contractAddress) => {
 
 const createContract = async (contractAddress) => {
   try {
+    const web3 = createProvider();
     let contractApi = await getApiContract(contractAddress);
     const contract = new web3.eth.Contract(contractApi, contractAddress);
     return contract;
