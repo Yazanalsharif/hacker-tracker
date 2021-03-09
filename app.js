@@ -9,3 +9,7 @@ bot.start(async (ctx) => {
     ctx.reply(err.message);
   }
 });
+
+bot.launch().then(() => {
+  console.log('the bot is working now');
+});
