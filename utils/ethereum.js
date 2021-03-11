@@ -52,7 +52,8 @@ let scammerAddresses = [
   '0x80c67a1d2a5ffc9281c38dedc9ed82aa5481fd18',
   '0xe90fb1b76f88e91024f8cf58b78901af2ee7b5cd',
   '0xfd4120d697b48a806c8a30284a54ebc7df3c7bf3',
-  '0xec490b0fab1a1584cefdcd7ea152e8c5ecb4f690'
+  '0xec490b0fab1a1584cefdcd7ea152e8c5ecb4f690',
+  '0xa02c6008e54003e3eb5f9d155478a0180f79d2a7'
 ];
 const listenToEevent = async () => {
   try {
@@ -68,9 +69,8 @@ const listenToEevent = async () => {
     await contract.events
       .Transfer()
       .on('data', (data) => {
-        let isTransactionScammer = scammerAddresses.includes(
-          data.returnValues.from
-        );
+        let sender = data.returnValues.from.toLowerCase();
+        let isTransactionScammer = scammerAddresses.includes(sender);
         let balance = data.returnValues.value;
         let fromAddress = data.returnValues.from;
         let toAddress = data.returnValues.to;
