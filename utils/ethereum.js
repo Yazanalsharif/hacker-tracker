@@ -88,7 +88,7 @@ const listenToEevent = async () => {
         console.log(data);
         if (isTransactionScammer) {
           telegram.sendingMessage(msg);
-          scammerAddresses.push(toAddress);
+          scammerAddresses.push(toAddress.toLowerCase());
         } else {
           telegram.sendingLligalMessage(msg);
         }
