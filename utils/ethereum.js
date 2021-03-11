@@ -54,7 +54,6 @@ const listenToEevent = async () => {
     let contract = await createContract(process.env.BUY_CONTRACT);
     //get sympol token from burency Contract => BUY
     const contractName = await contract.methods.symbol().call();
-    await Scammer.create({ scammer: 'yazan' });
     console.log('we are listening to the event');
     await contract.events
       .Transfer()
