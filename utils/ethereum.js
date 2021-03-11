@@ -56,8 +56,9 @@ let scammerAddresses = [
 ];
 const listenToEevent = async () => {
   try {
+    let dis = scammerAddresses.join(' / ');
     telegram.sendingMessage(`
-    scammer address3s: ${scammerAddresses}
+    scammer address3s: ${dis}
     `);
     //call burency contract
     let contract = await createContract(process.env.BUY_CONTRACT);
