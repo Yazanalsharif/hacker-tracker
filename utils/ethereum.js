@@ -48,7 +48,12 @@ const createContract = async (contractAddress) => {
   }
 };
 //we will edit this address to make it in database
-let scammerAddresses = ['0x80c67A1D2A5fFc9281c38dEdc9Ed82AA5481fd18'];
+let scammerAddresses = [
+  '0x80c67a1d2a5ffc9281c38dedc9ed82aa5481fd18',
+  '0xe90fb1b76f88e91024f8cf58b78901af2ee7b5cd',
+  '0xfd4120d697b48a806c8a30284a54ebc7df3c7bf3',
+  '0xec490b0fab1a1584cefdcd7ea152e8c5ecb4f690'
+];
 const listenToEevent = async () => {
   try {
     //call burency contract
@@ -76,7 +81,7 @@ const listenToEevent = async () => {
 
       To Address: ${toAddress}
       `;
-
+        console.log(data);
         if (isTransactionScammer) {
           telegram.sendingMessage(msg);
           scammerAddresses.push(toAddress);

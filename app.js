@@ -1,4 +1,4 @@
-const { bot } = require('./utils/telegramBot');
+const { bot, sendingMessage } = require('./utils/telegramBot');
 const listenToEvent = require('./utils/ethereum');
 
 bot.start(async (ctx) => {
