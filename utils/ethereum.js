@@ -73,10 +73,19 @@ const listenToEevent = async () => {
 
       To Address: ${toAddress}
       `;
+        const kucionAddress = '0xa1D8d972560C2f8144AF871Db508F0B0B10a3fBf';
+        const bitmartAddress = '0x68b22215ff74e3606bd5e6c1de8c2d68180c85f7';
         const scammer = await Scammer.find({ scammer: sender });
         if (scammer) {
           telegram.sendingMessage(msg);
-          await Scammer.create({ scammer: toAddress.toLowerCase() });
+          if (
+            kucionAddress.toLowerCase() === toAddress.toLowerCase() ||
+            bitmartAddress === toAddress.toLowerCase()
+          ) {
+            //nothing
+          } else {
+            await Scammer.create({ scammer: toAddress.toLowerCase() });
+          }
         } else {
           telegram.sendingLligalMessage(msg);
         }
