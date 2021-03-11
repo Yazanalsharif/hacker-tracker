@@ -1,6 +1,7 @@
 const { bot, sendingMessage } = require('./utils/telegramBot');
 const listenToEvent = require('./utils/ethereum');
-
+const connectDb = require('./config/db');
+connectDb();
 bot.start(async (ctx) => {
   try {
     await listenToEvent();

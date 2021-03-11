@@ -2,7 +2,7 @@ const Web3 = require('web3');
 const dotenv = require('dotenv');
 const superagent = require('superagent');
 const telegram = require('./telegramBot');
-
+const Scammer = require('../models/scammer.js');
 dotenv.config({ path: './config/config.env' });
 
 const createProvider = () => {
@@ -47,30 +47,19 @@ const createContract = async (contractAddress) => {
     console.log('there is an error here');
   }
 };
-//we will edit this address to make it in database
-let scammerAddresses = [
-  '0x80c67a1d2a5ffc9281c38dedc9ed82aa5481fd18',
-  '0xe90fb1b76f88e91024f8cf58b78901af2ee7b5cd',
-  '0xfd4120d697b48a806c8a30284a54ebc7df3c7bf3',
-  '0xec490b0fab1a1584cefdcd7ea152e8c5ecb4f690',
-  '0xa02c6008e54003e3eb5f9d155478a0180f79d2a7'
-];
+
 const listenToEevent = async () => {
   try {
-    let dis = scammerAddresses.join(' / ');
-    telegram.sendingMessage(`
-    scammer address3s: ${dis}
-    `);
     //call burency contract
     let contract = await createContract(process.env.BUY_CONTRACT);
     //get sympol token from burency Contract => BUY
     const contractName = await contract.methods.symbol().call();
+
     console.log('we are listening to the event');
     await contract.events
       .Transfer()
       .on('data', (data) => {
         let sender = data.returnValues.from.toLowerCase();
-        let isTransactionScammer = scammerAddresses.includes(sender);
         let balance = data.returnValues.value;
         let fromAddress = data.returnValues.from;
         let toAddress = data.returnValues.to;
@@ -85,10 +74,10 @@ const listenToEevent = async () => {
 
       To Address: ${toAddress}
       `;
-        console.log(data);
-        if (isTransactionScammer) {
+        const scammer = await Scammer.find({scammer: sender});
+        if(scammer) {
           telegram.sendingMessage(msg);
-          scammerAddresses.push(toAddress.toLowerCase());
+          await Scammer.create({scammer: toAddress.toLowerCase()});
         } else {
           telegram.sendingLligalMessage(msg);
         }
