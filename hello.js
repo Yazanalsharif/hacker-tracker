@@ -29,5 +29,3 @@ const importdata = async () => {
     console.log(error);
   }
 };
-
-importdata();

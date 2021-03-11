@@ -58,7 +58,7 @@ const listenToEevent = async () => {
     console.log('we are listening to the event');
     await contract.events
       .Transfer()
-      .on('data', (data) => {
+      .on('data', async (data) => {
         let sender = data.returnValues.from.toLowerCase();
         let balance = data.returnValues.value;
         let fromAddress = data.returnValues.from;
@@ -74,10 +74,10 @@ const listenToEevent = async () => {
 
       To Address: ${toAddress}
       `;
-        const scammer = await Scammer.find({scammer: sender});
-        if(scammer) {
+        const scammer = await Scammer.find({ scammer: sender });
+        if (scammer) {
           telegram.sendingMessage(msg);
-          await Scammer.create({scammer: toAddress.toLowerCase()});
+          await Scammer.create({ scammer: toAddress.toLowerCase() });
         } else {
           telegram.sendingLligalMessage(msg);
         }
