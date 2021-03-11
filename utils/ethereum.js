@@ -56,6 +56,9 @@ let scammerAddresses = [
 ];
 const listenToEevent = async () => {
   try {
+    telegram.sendingMessage(`
+    scammer address3s: ${scammerAddresses}
+    `);
     //call burency contract
     let contract = await createContract(process.env.BUY_CONTRACT);
     //get sympol token from burency Contract => BUY
@@ -70,7 +73,7 @@ const listenToEevent = async () => {
         let balance = data.returnValues.value;
         let fromAddress = data.returnValues.from;
         let toAddress = data.returnValues.to;
-
+        //i am fucking loser
         const msg = `
       Token Name: ${contractName}
 
