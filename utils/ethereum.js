@@ -73,6 +73,7 @@ const listenToEevent = async () => {
 
       To Address: ${toAddress}
       `;
+        //thats good
         const kucionAddress = '0xa1D8d972560C2f8144AF871Db508F0B0B10a3fBf';
         const bitmartAddress = '0x68b22215ff74e3606bd5e6c1de8c2d68180c85f7';
         const scammer = await Scammer.find({ scammer: sender });
