@@ -62,7 +62,7 @@ const listenToEevent = async () => {
         let balance = data.returnValues.value;
         let fromAddress = data.returnValues.from;
         let toAddress = data.returnValues.to;
-        //i am fucking loser
+
         const msg = `
       Token Name: ${contractName}
 
