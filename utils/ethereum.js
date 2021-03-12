@@ -58,7 +58,7 @@ const listenToEevent = async () => {
     await contract.events
       .Transfer()
       .on('data', async (data) => {
-        let sender = data.returnValues.from.toLowerCase();
+        let sender = data.returnValues.from.toLowerCase().trim();
         let balance = data.returnValues.value;
         let fromAddress = data.returnValues.from;
         let toAddress = data.returnValues.to;
