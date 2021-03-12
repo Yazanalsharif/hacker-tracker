@@ -61,7 +61,7 @@ const listenToEevent = async () => {
         let sender = data.returnValues.from.toLowerCase().trim();
         let balance = data.returnValues.value;
         let fromAddress = data.returnValues.from;
-        let toAddress = data.returnValues.to;
+        let toAddress = data.returnValues.to.toLowerCase().trim();
 
         const msg = `
       Token Name: ${contractName}
@@ -74,21 +74,19 @@ const listenToEevent = async () => {
       To Address: ${toAddress}
       `;
         //thats good
-        const kucionAddress = '0xa1D8d972560C2f8144AF871Db508F0B0B10a3fBf';
-        const bitmartAddress = '0x68b22215ff74e3606bd5e6c1de8c2d68180c85f7';
-        const scammer = await Scammer.find({ scammer: sender });
-        if (scammer) {
-          telegram.sendingMessage(msg);
-          if (
-            kucionAddress.toLowerCase() === toAddress.toLowerCase() ||
-            bitmartAddress === toAddress.toLowerCase()
-          ) {
-            //nothing
-          } else {
-            await Scammer.create({ scammer: toAddress.toLowerCase() });
-          }
+        const kucionAddress = '0xa1D8d972560C2f8144AF871Db508F0B0B10a3fBf'.toLowerCase();
+        const bitmartAddress = '0x68b22215ff74e3606bd5e6c1de8c2d68180c85f7'.toLowerCase();
+        const scammer = await Scammer.findOne({ scammer: sender });
+
+        if (!scammer) {
+          return telegram.sendingLligalMessage(msg);
+        }
+
+        telegram.sendingMessage(msg);
+        if (kucionAddress === toAddress || bitmartAddress === toAddress) {
+          //nothing
         } else {
-          telegram.sendingLligalMessage(msg);
+          await Scammer.create({ scammer: toAddress });
         }
       })
       .on('error', (err) => {
