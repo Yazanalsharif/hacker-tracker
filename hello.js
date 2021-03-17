@@ -20,8 +20,10 @@ let scammerAddresses = [
   { scammer: '0xec490b0fab1a1584cefdcd7ea152e8c5ecb4f690' },
   { scammer: '0xa02c6008e54003e3eb5f9d155478a0180f79d2a7' },
   { scammer: '0x19D46Be65EDe0d0EA82E6a93e34cd573c2c481C4' },
+  { scammer: '0xf6d60d1B0621aB01E856A71Da8B9ee1f62023B21' },
   { scammer: '0xD3b42FA9B6031BaE59ddd362B8778ec916736F00' }
 ];
+//0xDe528EceC4F16cc20bFAfAD23B41388343C243C4
 //import data from json files
 const importdata = async () => {
   try {
@@ -40,4 +42,3 @@ const deleteData = async () => {
     console.log(err);
   }
 };
-importdata();
